@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.actions.act_window" id="details_attendance_session_view_action">
+        <field name="name">Attendance Sessions</field>
+        <field name="res_model">attendance.session</field>
+        <field name="context">{}</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="Attendances" id="menu_attendances"
+              action="details_attendance_session_view_action"
+              sequence="6"/>
+    <menuitem name="Sessions" id="menu_attendance_sessions"
+              action="details_attendance_session_view_action"
+              parent="menu_attendances"
+              sequence="1"/>
+
+    <record id="attendance_session_form_view" model="ir.ui.view">
+        <field name="name">Attendance Session</field>
+        <field name="model">attendance.session</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Attendaces">
+                <header>
+                    <button name="create_attendances" string="Add Students" help="Click here to add students of the selected batch" type="object" class="oe_highlight" attrs="{'invisible': [('students_added','=',True)]}"/>
+                    <button name="reset_attendances" string="Reset Students" help="Clear all the attendance records of students in this session" type="object" class="oe_highlight" attrs="{'invisible': [('students_added','=',False)]}"/>
+                </header> 
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="students_added"/>
+                            <field name="date"/>
+                            <field name="class_id"/>
+                            <!-- <field name="batch_id"/> -->
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page string="Attendances">
+                                <field name="student_attendances">
+                                    <tree editable="bottom" create="0">
+                                        <field name="date"/>
+                                        <field name="student_name"/>
+                                        <field name="morning_attendance"/>
+                                        <field name="evening_attendance"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="attendance_session_tree_view" model="ir.ui.view">
+        <field name="name">attendance.session.tree.view</field>
+        <field name="model">attendance.session</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <!-- <field name="batch_id"/> -->
+                <field name="class_id"/>
+            </tree>
+
+        </field>
+    </record>
+</odoo>

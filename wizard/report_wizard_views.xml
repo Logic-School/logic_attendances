@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="attendance_report_wizard_form">
+        <field name="name">attendance.report.wizard.form</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Attendance Report">
+                <group>
+                    <group>
+                        <field name="class_id"/>
+                        <!-- <field name="batch_id"/> -->
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="generate_report" type="object" string="Generate Report" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_attendance_report" model="ir.actions.act_window">
+        <field name="name">Generate Attendance Report</field>
+        <field name="res_model">attendance.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="attendance_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_attendance_report" parent="logic_attendances.menu_attendances" name="Attendance Report" sequence="7"
+              action="action_attendance_report"/>
+</odoo>
