@@ -8,8 +8,8 @@ class AttendanceSession(models.Model):
             zeroes = "0"*(5 - len(str(record.id)))
             record.name = "ATT"+zeroes+str(record.id)
     name = fields.Char(string="Name",compute="_compute_name")
-    date = fields.Date(string="Date",default=datetime.today())
-    class_id = fields.Many2one('logic.base.class',string="Class Room")
+    date = fields.Date(string="Date",default=datetime.today(), required=True)
+    class_id = fields.Many2one('logic.base.class',string="Class Room",required=True)
     # batch_id = fields.Many2one('logic.base.batch', string="Batch")
     student_attendances = fields.One2many('student.attendance','session_id', string="Student Attendances", default=False)
     students_added = fields.Boolean()
@@ -37,3 +37,11 @@ class AttendanceSession(models.Model):
     def reset_attendances(self):
         self.env['student.attendance'].search([('session_id','=',self.id)]).unlink()
         self.students_added = False
+
+    @api.model
+    def create(self,vals):
+        test_obj = self.env['attendance.session'].search([('date','=',vals['date']), ('class_id','=',vals['class_id'])],limit=1)
+        if test_obj:
+            raise UserError(f"A Session record for this class on {vals['date']} already exists!")
+        else:
+            return super(AttendanceSession,self).create(vals)
