@@ -29,27 +29,31 @@ class ReportWizard(models.TransientModel):
             names_and_ids[student.id] = student.name
         return names_and_ids
     def generate_report(self):
-        days = []
-        cur_date = self.start_date
         try:
             os.remove('/tmp/attendance_report.xlsx')
         except:
             pass
+
         workbook = xlsxwriter.Workbook('/tmp/attendance_report.xlsx')
         worksheet = workbook.add_worksheet()
         worksheet.set_column('A:A', 20)
+        
         header_format = workbook.add_format()
         header_format.set_align('center')
         header_format.set_bold()
+        
         worksheet.write(1,0,'STUDENTS',header_format)
+        
         students = self.env['logic.students'].search([('class_id','=',self.class_id.id)])
         names_and_ids = self.get_name_id_dict(students)
         data_dict = {}
+        
         dates = self.get_dates()
-
         date_format = workbook.add_format()
         date_format.set_num_format('dd/mm/yy')
+
         percentage_format = workbook.add_format({'num_format': '0.0%'})        # raise UserError(dates)
+
         date_col_ind = 1
         for date in dates:
             worksheet.write(1,date_col_ind,date,date_format)
@@ -58,8 +62,7 @@ class ReportWizard(models.TransientModel):
         total_working_days = 0
         for student in students:
             data_dict[student.id] = {}
-            for date in dates:
-                
+            for date in dates:                
                 # check if the day is holiday or not
                 test_obj = self.env['student.attendance'].search([('date','=',date)],limit=1)
                 date=str(date) #converted to string as python dont accept date obj as dict key
@@ -87,6 +90,7 @@ class ReportWizard(models.TransientModel):
         half_day_format.set_color('orange')
         absent_format = workbook.add_format()
         absent_format.set_color('red')
+
         # raise UserError(data_dict)
         row_ind = 2
         for key in data_dict.keys():
@@ -115,9 +119,6 @@ class ReportWizard(models.TransientModel):
         worksheet.write(1,col_ind+2,'Attendance Percentage',header_format)
         worksheet.set_column(col_ind+2,col_ind+2,20)
 
-
-
-
         col_address = self.get_col_address(col_ind-1)
         for row in range(2,row_ind):
             worksheet.write_formula(row, col_ind, f'COUNTIF(B{row+1}:{col_address}{row+1}, "Present") + COUNTIF(B{row+1}:{col_address}{row+1}, "Half Day")/2')
@@ -141,7 +142,9 @@ class ReportWizard(models.TransientModel):
 
     def get_col_address(self,col_ind):
         alphabets = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
-        first_letter = alphabets[col_ind//26] if col_ind>26 else ''
-        second_letter = alphabets[col_ind%26]
+        first_letter = alphabets[(col_ind//26)-1] if col_ind>26 else ''
+        second_letter = alphabets[(col_ind%26)-1]
+        # raise UserError(f'hello {col_ind}')
+
         return first_letter+second_letter
         
