@@ -11,6 +11,7 @@ class ReportWizard(models.TransientModel):
     end_date = fields.Date()
     class_id = fields.Many2one('logic.base.class',string="Class Room")
     excel_file = fields.Binary(string="Excel Report")
+    filename = fields.Char(string="Filename")
 
     # batch_id = fields.Many2one('logic.base.batch', string="Batch")
 
@@ -126,11 +127,12 @@ class ReportWizard(models.TransientModel):
         workbook.close()
         excel_file = base64.b64encode(open('/tmp/attendance_report.xlsx','rb').read())
         self.excel_file = excel_file
+        self.filename = f"Attendance Report - {self.class_id.name} - {self.start_date} to {self.end_date}"
         
         return {
             'name': 'Download Attendance Report',
             'type': 'ir.actions.act_url',
-            'url': '/web/content/?model=attendance.report.wizard&id={}&field=excel_file&filename_field=test_report.xlsx&download=true'.format(
+            'url': '/web/content/?model=attendance.report.wizard&id={}&field=excel_file&filename_field=filename&download=true'.format(
                 self.id
             ),
             'target': 'self',

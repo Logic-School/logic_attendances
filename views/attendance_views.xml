@@ -22,7 +22,7 @@
             <form string="Attendaces">
                 <header>
                     <button name="create_attendances" string="Add Students" help="Click here to add students of the selected batch" type="object" class="oe_highlight" attrs="{'invisible': [('students_added','=',True)]}"/>
-                    <button name="reset_attendances" string="Reset Students" help="Clear all the attendance records of students in this session" type="object" class="oe_highlight" attrs="{'invisible': [('students_added','=',False)]}"/>
+                    <button name="reset_attendances" string="Reset Attendances" help="Clear all the attendance records of students in this session" confirm="This will delete all attendance records related to this session. Are you sure you want to do this?" type="object" class="oe_highlight" attrs="{'invisible': [('students_added','=',False)]}"/>
                 </header> 
                 <sheet>
                     <group>
