@@ -10,7 +10,7 @@
         'wizard/report_wizard_views.xml',
     ],
     'demo': [],
-    'summary': "Logic Loans",
+    'summary': "Attendances",
     'description': "",
     'installable': True,
     'auto_install': False,
