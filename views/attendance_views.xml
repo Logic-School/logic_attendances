@@ -27,7 +27,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="students_added"/>
+                            <field name="students_added" invisible="1"/>
                             <field name="date"/>
                             <field name="class_id"/>
                             <!-- <field name="batch_id"/> -->
@@ -42,6 +42,7 @@
                                         <field name="student_name"/>
                                         <field name="morning_attendance"/>
                                         <field name="evening_attendance"/>
+                                        <field name="absent_reason"/>
                                     </tree>
                                 </field>
                             </page>

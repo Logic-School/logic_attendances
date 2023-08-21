@@ -10,3 +10,4 @@ class StudentAttendance(models.Model):
     date = fields.Date(related='session_id.date')
     morning_attendance = fields.Boolean(string="Morning Attendance")
     evening_attendance = fields.Boolean(string="Evening Attendance")
+    absent_reason = fields.Char(string="Absent Reason")
