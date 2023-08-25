@@ -9,7 +9,7 @@
     <menuitem name="Attendances" id="menu_attendances"
               action="details_attendance_session_view_action"
               sequence="6"
-              web_icon="logic_base/static/description/icon.png"/>
+              web_icon="logic_attendances/static/description/icon.png"/>
     <menuitem name="Sessions" id="menu_attendance_sessions"
               action="details_attendance_session_view_action"
               parent="menu_attendances"
