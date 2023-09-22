@@ -21,7 +21,7 @@ class AttendanceSession(models.Model):
                     ('class_id', '=', self.class_id.id)])
             self.env['student.attendance'].search([('session_id','=',self.id)]).unlink()
             if not students:
-                raise UserError("No students found in the selected batch!")
+                raise UserError("No students found in the selected class!")
             for student in students:
                 student_attendance = self.env['student.attendance'].create({
                     'student_id': student.id,

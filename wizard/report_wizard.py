@@ -45,6 +45,8 @@ class ReportWizard(models.TransientModel):
         worksheet.write(1,0,'STUDENTS',header_format)
         
         students = self.env['logic.students'].search([('class_id','=',self.class_id.id)])
+        if not students:
+            raise UserError("The selected class does not contain any students!")
         names_and_ids = self.get_name_id_dict(students)
         data_dict = {}
         
@@ -119,7 +121,7 @@ class ReportWizard(models.TransientModel):
         worksheet.write(1,col_ind+2,'Attendance Percentage',header_format)
         worksheet.set_column(col_ind+2,col_ind+2,20)
 
-        col_address = self.get_col_address(col_ind-1)
+        col_address = self.get_col_address(col_ind)
         for row in range(2,row_ind):
             worksheet.write_formula(row, col_ind, f'COUNTIF(B{row+1}:{col_address}{row+1}, "Present") + COUNTIF(B{row+1}:{col_address}{row+1}, "Half Day")/2')
             worksheet.write_formula(row, col_ind+1, f'COUNTIF(B{row+1}:{col_address}{row+1}, "<>Holiday")')
