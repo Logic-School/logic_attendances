@@ -31,6 +31,7 @@
                             <field name="students_added" invisible="1"/>
                             <field name="date"/>
                             <field name="class_id"/>
+                            <field name="coordinator"/>
                             <!-- <field name="batch_id"/> -->
                         </group>
                     </group>
