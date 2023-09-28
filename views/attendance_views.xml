@@ -68,4 +68,33 @@
 
         </field>
     </record>
+
+    <record id="student_attendance_tree_view" model="ir.ui.view">
+        <field name="name">student.attendance.tree.view</field>
+        <field name="model">student.attendance</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="session_id"/>
+                <field name="class_id"/>
+                <field name="morning_attendance"/>
+                <field name="evening_attendance"/>
+                
+            </tree>
+
+        </field>
+    </record>
+
+    <record id="student_attendance_search" model="ir.ui.view">
+        <field name="name">student.attendance.search</field>
+        <field name="model">student.attendance</field>
+        <field name="arch" type="xml">
+            <search>
+                <group expand="0" string="Group By">
+                    <filter string="Class" name="class_id" context="{'group_by': 'class_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
