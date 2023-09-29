@@ -9,17 +9,22 @@ class AttendanceSession(models.Model):
             record.name = "ATT"+zeroes+str(record.id)
     name = fields.Char(string="Name",compute="_compute_name")
     date = fields.Date(string="Date",default=datetime.today(), required=True)
-    class_id = fields.Many2one('logic.base.class',string="Class",required=True)
+    
+    class_id = fields.Many2one('logic.base.class',string="Class",required=True,domain="[('batch_id','=',batch_id)]")
     coordinator = fields.Many2one("res.users",string="Coordinator",default=lambda self: self.env.user.id, readonly=True)
-    # batch_id = fields.Many2one('logic.base.batch', string="Batch")
+    batch_id = fields.Many2one('logic.base.batch', string="Batch",required=True)
     student_attendances = fields.One2many('student.attendance','session_id', string="Student Attendances", default=False)
     students_added = fields.Boolean()
     # @api.onchange('batch_id')
     def create_attendances(self):
         if self.class_id:
             # self.student_attendances = False
+            class_allocated_stud_ids = []
+            for stud_line in self.class_id.line_base_ids:
+                class_allocated_stud_ids.append(stud_line.student_id.id)
             students = self.env['logic.students'].search([
-                    ('class_id', '=', self.class_id.id)])
+                    ('id', 'in', class_allocated_stud_ids)])
+            
             self.env['student.attendance'].search([('session_id','=',self.id)]).unlink()
             if not students:
                 raise UserError("No students found in the selected class!")
