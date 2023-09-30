@@ -7,7 +7,7 @@
             <form string="Generate Attendance Report">
                 <group>
                     <group>
-                        <field name="class_id"/>
+                        <field name="class_id"  options="{'no_create':True}"/>
                         <!-- <field name="batch_id"/> -->
                     </group>
                     <group>

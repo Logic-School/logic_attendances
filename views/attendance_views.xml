@@ -31,7 +31,7 @@
                             <field name="students_added" invisible="1"/>
                             <field name="date"/>
                             <field name="batch_id"/>
-                            <field name="class_id"/>
+                            <field name="class_id" options="{'no_create':True}"/>
                             <field name="coordinator"/>
                             <!-- <field name="batch_id"/> -->
                         </group>
@@ -64,7 +64,7 @@
             <tree>
                 <field name="date"/>
                 <!-- <field name="batch_id"/> -->
-                <field name="class_id"/>
+                <field name="class_id" options="{'no_create':True}"/>
             </tree>
 
         </field>
