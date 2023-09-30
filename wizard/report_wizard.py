@@ -44,7 +44,13 @@ class ReportWizard(models.TransientModel):
         
         worksheet.write(1,0,'STUDENTS',header_format)
         
-        students = self.env['logic.students'].search([('class_id','=',self.class_id.id)])
+        class_student_lines = self.class_id.line_base_ids
+        allocated_student_ids = []
+        for student_line in class_student_lines:
+            allocated_student_ids.append(student_line.student_id.id)
+            
+        students = self.env['logic.students'].search([('id','in',allocated_student_ids)])
+
         if not students:
             raise UserError("The selected class does not contain any students!")
         names_and_ids = self.get_name_id_dict(students)
