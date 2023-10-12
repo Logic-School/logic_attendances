@@ -41,8 +41,12 @@
                             <page string="Attendances">
                                 <field name="student_attendances">
                                     <tree editable="bottom" create="0">
-                                        <field name="date"/>
                                         <field name="student_name"/>
+                                        <field name="attempt"/>
+                                        <field name="recording_status"/>
+                                        <field name="email"/>
+                                        <field name="phone_number"/>
+                                        <field name="parent_whatsapp"/>
                                         <field name="morning_attendance"/>
                                         <field name="evening_attendance"/>
                                         <field name="absent_reason"/>
