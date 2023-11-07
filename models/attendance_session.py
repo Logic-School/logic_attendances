@@ -15,6 +15,32 @@ class AttendanceSession(models.Model):
     batch_id = fields.Many2one('logic.base.batch', string="Batch",required=True)
     student_attendances = fields.One2many('student.attendance','session_id', string="Student Attendances", default=False)
     students_added = fields.Boolean()
+    total_students_count = fields.Integer(compute="_compute_total_present_students_count")
+    present_students_count = fields.Float(compute="_compute_total_present_students_count")
+    present_total_display = fields.Char(compute="_compute_present_total_display",string="Attendance")
+    
+    def _compute_total_present_students_count(self):
+        for record in self:
+            if record.student_attendances:
+                record.total_students_count = len(record.student_attendances)
+                present_count = 0
+                for attendance in record.student_attendances:
+                    if attendance.morning_attendance:
+                        present_count+=0.5
+                    if attendance.evening_attendance:
+                        present_count+=0.5
+                record.present_students_count = present_count
+            else:
+                record.total_students_count = 0
+                record.present_students_count = 0
+    @api.depends('present_students_count','total_students_count')
+    def _compute_present_total_display(self):
+        for record in self:
+            if record.present_students_count and record.total_students_count:
+                record.present_total_display = str(record.present_students_count) + ' / ' + str(record.total_students_count)
+            else:
+                record.present_total_display = '' 
+
     # @api.onchange('batch_id')
     def create_attendances(self):
         if self.class_id:
