@@ -32,6 +32,7 @@
                             <field name="date"/>
                             <field name="batch_id"/>
                             <field name="class_id" options="{'no_create':True}"/>
+                            <field name="session_type"/>
                             <field name="coordinator"/>
                             <!-- <field name="batch_id"/> -->
                         </group>
@@ -46,8 +47,9 @@
                                     <field name="email"/>
                                     <field name="phone_number"/>
                                     <field name="parent_whatsapp"/>
-                                    <field name="morning_attendance"/>
-                                    <field name="evening_attendance"/>
+                                    <field name="morning_attendance" attrs="{'column_invisible':[('parent.session_type','=','online')]}"/>
+                                    <field name="evening_attendance" attrs="{'column_invisible':[('parent.session_type','=','online')]}"/>
+                                    <field name="full_attendance" attrs="{'column_invisible':[('parent.session_type','=','offline')]}"/>
                                     <field name="absent_reason"/>
                                 </tree>
                             </field>

@@ -18,7 +18,19 @@ class AttendanceSession(models.Model):
     total_students_count = fields.Integer(compute="_compute_total_present_students_count")
     present_students_count = fields.Float(compute="_compute_total_present_students_count")
     present_total_display = fields.Char(compute="_compute_present_total_display",string="Attendance")
-    
+    session_type = fields.Selection([('offline','Offline'),('online','Online')],required=True)
+
+
+    @api.onchange('session_type')
+    def on_session_type_change(self):
+        if self.session_type=='online':
+            if self.student_attendances:
+                for attendance in self.student_attendances:
+                    attendance.morning_attendance = True
+                    attendance.evening_attendance = True
+                    attendance.full_attendance = True
+            
+
     def _compute_total_present_students_count(self):
         for record in self:
             if record.student_attendances:
@@ -59,6 +71,7 @@ class AttendanceSession(models.Model):
                     'student_id': student.id,
                     'morning_attendance':True,
                     'evening_attendance':True,
+                    'full_attendance': True,
                     'session_id': self.id,
                 })
             self.student_attendances = self.env['student.attendance'].search([('session_id','=',self.id)])
